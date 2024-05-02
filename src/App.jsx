@@ -18,10 +18,27 @@ function App() {
     }})
   }
 
+  function handleAddProject(projectData) {
+    setProjectsState(prevProjectsState => {
+      const newProject = {
+        ...projectData,
+        id: Math.random()
+      }
+
+      return {
+        ...prevProjectsState,
+        selectedProjectId: undefined,
+        projects: [...prevProjectsState.projects, newProject]
+      }
+    })
+  }
+
+  console.log(projectsState);
+
   let pageContent;
 
   if (projectsState.selectedProjectId === null) {
-    pageContent = <NewProject />
+    pageContent = <NewProject onAddProject={handleAddProject}/>
   } else if (projectsState.selectedProjectId === undefined) {
     pageContent = <NoProjectSelected onClickAddProjectButton={handleAddProjectButton}/>
   }
