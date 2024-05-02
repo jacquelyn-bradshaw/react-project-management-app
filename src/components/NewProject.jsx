@@ -3,7 +3,7 @@ import {useRef} from "react"
 import Input from "./Input.jsx"
 import Modal from "./Modal.jsx"
 
-export default function NewProject ({onAddProject}) {
+export default function NewProject ({onAddProject, onCancelAddProject}) {
   const modalRef = useRef()
   
   const titleRef = useRef()
@@ -36,7 +36,11 @@ export default function NewProject ({onAddProject}) {
       <div className="w-[35rem] mt-16">
         <menu className="flex items-center justify-end gap-4 my-4">
           <li>
-            <button className="text-stone-800 hover:text-stone-950">Cancel</button>
+            <button
+              onClick={onCancelAddProject}
+              className="text-stone-800 hover:text-stone-950">
+                Cancel
+            </button>
           </li>
           <li>
             <button
