@@ -11,7 +11,15 @@ function App() {
     projects: []
   })
 
-  function handleAddProjectButton () {
+  function handleSelectProject(id) {
+    setProjectsState(prevProjectsState => {
+      return {
+      ...prevProjectsState,
+      selectedProjectId: id
+    }})
+  }
+
+  function handleAddProjectButton() {
     setProjectsState(prevProjectsState => {
       return {
       ...prevProjectsState,
@@ -19,7 +27,7 @@ function App() {
     }})
   }
 
-  function handleCancelAddProjectButton () {
+  function handleCancelAddProjectButton() {
     setProjectsState(prevProjectsState => {
       return {
       ...prevProjectsState,
@@ -38,15 +46,26 @@ function App() {
 
       return {
         ...prevProjectsState,
-        selectedProjectId: undefined,
+        selectedProjectId: newProjectId,
         projects: [...prevProjectsState.projects, newProject]
       }
     })
   }
 
-  console.log(projectsState);
+  function handleDeleteProject() {
+    setProjectsState(prevProjectsState => {
+      return {
+      ...prevProjectsState,
+      selectedProjectId: undefined,
+      projects: prevProjectsState.projects.filter(
+        (project) => project.id !== prevProjectsState.selectedProjectId
+      )
+    }})
+  }
 
-  let pageContent;
+  const selectedProject = projectsState.projects.find(project => project.id === projectsState.selectedProjectId)
+
+  let pageContent = <SelectedProject project={selectedProject} onDeleteProject={handleDeleteProject}/>;
 
   if (projectsState.selectedProjectId === null) {
     pageContent = <NewProject onAddProject={handleAddProject} onCancelAddProject={handleCancelAddProjectButton}/>
@@ -56,7 +75,11 @@ function App() {
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <Sidebar projects={projectsState.projects} onClickAddProjectButton={handleAddProjectButton}/>
+      <Sidebar
+        projects={projectsState.projects}
+        onClickAddProjectButton={handleAddProjectButton}
+        onSelectProject={handleSelectProject}
+      />
       {pageContent}
     </main>
   );
